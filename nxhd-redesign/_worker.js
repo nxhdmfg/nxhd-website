@@ -186,20 +186,22 @@ async function handleOAuthCallback(request, env) {
 }
 
 function popupPostMessage(token, provider, error) {
-  // Matches Decap CMS' GitHub OAuth contract:
-  //   - Decap opens /api/auth in a popup
-  //   - popup eventually POSTS this exact message via window.opener.postMessage()
-  //   - message format: authorization:<provider>:(success|error):<JSON>
+  // Decap CMS / Netlify CMS GitHub OAuth handshake protocol:
+  //   1. popup sends "authorizing:<provider>" to the parent window
+  //   2. parent (Decap) receives it, starts the auth flow, and replies with
+  //      "authorizing:<provider>" back to the popup
+  //   3. popup receives the reply and then sends the actual token as
+  //      "authorization:<provider>:success:<json>" using the reply's origin
+  // Without step 1+2, Decap receives the token but ignores it because it
+  // doesn't recognize the message as part of an auth flow it initiated.
   // See: https://decapcms.org/docs/external-oauth-clients/
-  //
-  // Fallback: when the browser opens the auth window as a new tab without
-  // window.opener (e.g. with noopener), store the token in localStorage and
-  // redirect back to /admin/. The admin page listens for storage events and
-  // dispatches the same message Decap is waiting for.
+  //      https://github.com/decaporg/decap-cms (netlify-cms-lib-auth / github backend)
+  const handshakeMsg = `authorizing:${provider}`;
   const payload = error
     ? `authorization:${provider}:error:${JSON.stringify({ message: error })}`
     : `authorization:${provider}:success:${JSON.stringify({ token, provider })}`;
   const safePayload = JSON.stringify(payload);
+  const safeHandshake = JSON.stringify(handshakeMsg);
   const safeToken = JSON.stringify(token || '');
   const safeProvider = JSON.stringify(provider);
   const safeError = JSON.stringify(error || '');
@@ -210,7 +212,8 @@ function popupPostMessage(token, provider, error) {
 <script>
 (function () {
   try {
-    var msg = ${safePayload};
+    var payload = ${safePayload};
+    var handshake = ${safeHandshake};
     var token = ${safeToken};
     var provider = ${safeProvider};
     var error = ${safeError};
@@ -218,24 +221,51 @@ function popupPostMessage(token, provider, error) {
       document.getElementById('status').textContent = 'Authorization failed: ' + error;
       return;
     }
-    if (window.opener && window.opener !== window) {
-      window.opener.postMessage(msg, '*');
-      // Belt-and-suspenders: also persist the token in localStorage so the
-      // admin page can pick it up via a `storage` event and replay the same
-      // message Decap is waiting for. This handles cases where the browser
-      // strips window.opener references or Decap's listener isn't ready in time.
+
+    function persistToken() {
       try {
         localStorage.setItem('decap-cms-oauth-token', token);
         localStorage.setItem('decap-cms-oauth-provider', provider);
       } catch (e) {}
+    }
+
+    function sendToken(targetOrigin) {
+      window.opener.postMessage(payload, targetOrigin || '*');
       document.getElementById('status').textContent = 'Authorized — closing window…';
-      setTimeout(function(){ window.close(); }, 800);
+      setTimeout(function(){ window.close(); }, 600);
+    }
+
+    if (window.opener && window.opener !== window) {
+      // Listen for Decap's handshake reply (typically "authorizing:<provider>").
+      // When we hear back, we know Decap is ready and we send the token.
+      window.addEventListener('message', function (e) {
+        if (typeof e.data === 'string' && e.data.indexOf('authorizing:') === 0) {
+          sendToken(e.origin);
+        }
+      });
+
+      // Also write to localStorage as a belt-and-suspenders fallback for the
+      // admin page's storage-event listener, in case the handshake fails.
+      persistToken();
+
+      // Kick off the handshake. If Decap responds, sendToken runs and the
+      // window closes. If it doesn't respond within 3 s, still try a direct
+      // postMessage and persist the token so the storage event can rescue us.
+      document.getElementById('status').textContent = 'Contacting admin…';
+      window.opener.postMessage(handshake, '*');
+      setTimeout(function () {
+        // If we still have the status text, handshake didn't complete.
+        if (document.getElementById('status').textContent.indexOf('Authorized') !== 0) {
+          document.getElementById('status').textContent = 'Authorized — closing window…';
+          window.opener.postMessage(payload, '*');
+          setTimeout(function(){ window.close(); }, 600);
+        }
+      }, 3000);
     } else {
-      // No opener: browser opened auth as a new tab. Use localStorage fallback.
-      try {
-        localStorage.setItem('decap-cms-oauth-token', token);
-        localStorage.setItem('decap-cms-oauth-provider', provider);
-      } catch (e) {}
+      // No opener (browser opened auth as a new tab). Use the localStorage
+      // + redirect path: the admin page listens for a storage event and
+      // dispatches the same message Decap is waiting for.
+      persistToken();
       document.getElementById('status').textContent = 'Redirecting back to admin…';
       window.location.replace('/admin/#oauth-callback');
     }

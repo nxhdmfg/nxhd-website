@@ -7,12 +7,9 @@
 # Workflow:  user logs in → Decap commits new .md → Cloudflare auto-rebuilds
 # ========================================================================
 
-# IMPORTANT: replace these two lines with your actual GitHub repo after creating it
-# e.g. repo: zhangningxin/nxhd-website
-repo: nxhdmfg/nxhd-website
-
 backend:
   name: github
+  repo: nxhdmfg/nxhd-website
   branch: main
   base_url: https://www.nxhdmfg.com
   auth_endpoint: api/auth      # Worker endpoint that initiates GitHub OAuth

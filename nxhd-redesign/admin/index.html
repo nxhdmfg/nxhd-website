@@ -18,6 +18,33 @@
   <div class="ncms-spinner"></div>
   <div>Loading content manager…</div>
 </div>
+<script>
+// Fallback for browsers that open the OAuth window without window.opener
+// (e.g. as a new tab with noopener). The callback page stores the token in
+// localStorage and redirects to /admin/#oauth-callback. We dispatch the same
+// message Decap's GitHub OAuth listener is waiting for.
+(function () {
+  function dispatchAuth() {
+    var token = localStorage.getItem('decap-cms-oauth-token');
+    var provider = localStorage.getItem('decap-cms-oauth-provider') || 'github';
+    if (!token) return;
+    localStorage.removeItem('decap-cms-oauth-token');
+    localStorage.removeItem('decap-cms-oauth-provider');
+    var payload = 'authorization:' + provider + ':success:' + JSON.stringify({ token: token, provider: provider });
+    window.dispatchEvent(new MessageEvent('message', {
+      data: payload,
+      origin: window.location.origin,
+      source: window
+    }));
+  }
+  window.addEventListener('storage', function (e) {
+    if (e.key === 'decap-cms-oauth-token') dispatchAuth();
+  });
+  if (window.location.hash.indexOf('oauth-callback') !== -1) {
+    dispatchAuth();
+  }
+})();
+</script>
 <script src="https://unpkg.com/decap-cms@^3.6.2/dist/decap-cms.js"></script>
 </body>
 </html>

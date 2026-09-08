@@ -179,30 +179,57 @@ async function handleOAuthCallback(request, env) {
     if (!token) {
       return popupPostMessage(`authorization:github:error:${JSON.stringify({ message: 'No access_token in response' })}`);
     }
-    return popupPostMessage(`authorization:github:success:${JSON.stringify({ token: token, provider: 'github' })}`);
+    return popupPostMessage(token, 'github');
   } catch (e) {
-    return popupPostMessage(`authorization:github:error:${JSON.stringify({ message: 'Token exchange failed: ' + String(e) })}`);
+    return popupPostMessage(null, 'github', 'Token exchange failed: ' + String(e));
   }
 }
 
-function popupPostMessage(payload) {
+function popupPostMessage(token, provider, error) {
   // Matches Decap CMS' GitHub OAuth contract:
   //   - Decap opens /api/auth in a popup
   //   - popup eventually POSTS this exact message via window.opener.postMessage()
   //   - message format: authorization:<provider>:(success|error):<JSON>
   // See: https://decapcms.org/docs/external-oauth-clients/
-  const safe = JSON.stringify(payload);
+  //
+  // Fallback: when the browser opens the auth window as a new tab without
+  // window.opener (e.g. with noopener), store the token in localStorage and
+  // redirect back to /admin/. The admin page listens for storage events and
+  // dispatches the same message Decap is waiting for.
+  const payload = error
+    ? `authorization:${provider}:error:${JSON.stringify({ message: error })}`
+    : `authorization:${provider}:success:${JSON.stringify({ token, provider })}`;
+  const safePayload = JSON.stringify(payload);
+  const safeToken = JSON.stringify(token || '');
+  const safeProvider = JSON.stringify(provider);
+  const safeError = JSON.stringify(error || '');
   const html = `<!DOCTYPE html><html><head><meta charset="utf-8"><title>Authorizing…</title>
 <style>body{font-family:system-ui;background:#0B1628;color:#fff;display:flex;align-items:center;justify-content:center;height:100vh;margin:0;flex-direction:column;gap:14px}h3{margin:0;font-size:18px;font-weight:600}p{opacity:.6;font-size:14px}</style></head>
 <body>
-<div style="text-align:center"><h3>NXHD content manager</h3><p>Authorizing — you can close this window if it doesn't close automatically.</p></div>
+<div style="text-align:center"><h3>NXHD content manager</h3><p id="status">Authorizing — you can close this window if it doesn't close automatically.</p></div>
 <script>
 (function () {
   try {
-    var msg = ${safe};
+    var msg = ${safePayload};
+    var token = ${safeToken};
+    var provider = ${safeProvider};
+    var error = ${safeError};
+    if (error) {
+      document.getElementById('status').textContent = 'Authorization failed: ' + error;
+      return;
+    }
     if (window.opener && window.opener !== window) {
       window.opener.postMessage(msg, '*');
-      setTimeout(function(){ window.close(); }, 200);
+      document.getElementById('status').textContent = 'Authorized — closing window…';
+      setTimeout(function(){ window.close(); }, 400);
+    } else {
+      // No opener: browser opened auth as a new tab. Use localStorage fallback.
+      try {
+        localStorage.setItem('decap-cms-oauth-token', token);
+        localStorage.setItem('decap-cms-oauth-provider', provider);
+      } catch (e) {}
+      document.getElementById('status').textContent = 'Redirecting back to admin…';
+      window.location.replace('/admin/#oauth-callback');
     }
   } catch (e) {
     document.body.innerHTML = '<pre style="color:#f55">OAuth callback error: ' + (e && e.message) + '</pre>';

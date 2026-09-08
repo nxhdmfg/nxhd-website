@@ -51,4 +51,3 @@ collections:
       - { label: "Excerpt", name: "excerpt", widget: "text", required: false, hint: "1–2 sentence summary shown on the listing page" }
       - { label: "Tags", name: "tags", widget: "list", required: false, hint: "Used to filter related articles" }
       - { label: "Body", name: "body", widget: "markdown", hint: "Full article body — supports Markdown (headings, bold, images, tables, code blocks)" }
-Commit message: Fix Decap content paths

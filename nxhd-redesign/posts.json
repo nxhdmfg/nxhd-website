@@ -1,0 +1,41 @@
+[
+  {
+    "slug": "welcome",
+    "title": "Welcome to the Ningxin Huida Newsroom",
+    "date": "2026-09-08",
+    "author": "NXHD Team",
+    "cover": "/assets/blog-testing.jpg",
+    "excerpt": "We are launching a new insights channel — covering fastener engineering, manufacturing quality, and the industries we serve (aerospace, railway, construction, machinery).",
+    "tags": [
+      "company",
+      "news"
+    ],
+    "content": "We are excited to launch the **Ningxin Huida newsroom** — a place where we share engineering know-how, manufacturing updates, and the stories behind the fasteners that hold critical structures together.\n\n## What you'll find here\n\n- **Engineering deep-dives** — practical guidance on selecting standard, special and self-tapping fasteners for demanding applications.\n- **Quality & testing** — notes from our ISO 9001 / 14001 / 45001 audited processes, including tensile, torque and salt-spray testing.\n- **Industry case studies** — how our parts are integrated into railway, aerospace, construction and industrial OEM projects.\n\n## How to get in touch\n\nIf you'd like a quote, a technical review of an existing drawing, or a CoC/test report, drop us a message at **[contact@nxhdmfg.com](mailto:contact@nxhdmfg.com)** — typical response time is **under 24 hours**.\n\nWe post new articles roughly **once a week**, with longer technical pieces roughly every two weeks. Thanks for reading — and welcome aboard."
+  },
+  {
+    "slug": "iso-recert-2026",
+    "title": "ISO 9001 / 14001 / 45001 Recertification Successfully Completed",
+    "date": "2026-09-01",
+    "author": "Quality Team",
+    "cover": "/assets/blog-attributes.jpg",
+    "excerpt": "Our three ISO management systems were re-certified this quarter by an accredited body, covering the Handan and Datong plants. Open the post for the scope statement and the new certificate numbers.",
+    "tags": [
+      "quality",
+      "certification"
+    ],
+    "content": "Our three ISO management systems — **ISO 9001:2015 (Quality)**, **ISO 14001:2015 (Environment)** and **ISO 45001:2018 (Occupational H&S)** — were re-certified this quarter following the surveillance audit of both manufacturing plants (Handan, founded 2020, and Datong HQ, founded 2025).\n\n## What the audit covered\n\n- Incoming material inspection for carbon steel, stainless steel and alloy wire/rod\n- Heat-treatment, surface-finishing and packaging process control\n- Calibration of tensile / torque / hardness testing equipment\n- Documented traceability from raw-material batch to finished goods\n- Hazard identification for cold-heading, thread-rolling and salt-spray operations\n\nThe audit closed with **zero major non-conformities**. Updated certificates have been published to the Quality page — please request the latest PDFs from your account manager if you need them on file for supplier approval.\n\n## What it means for customers\n\n- **Documented material traceability** on every shipment, including batch heat numbers and mechanical test results.\n- **Process consistency** validated by external surveillance — useful when your supplier-quality team asks for an audit report.\n- **Environment & H&S controls** documented per ISO 14001 / 45001 — required by some EU and APAC OEMs."
+  },
+  {
+    "slug": "self-tapping-screws-light-gauge-steel",
+    "title": "Self-Tapping Screws in Light-Gauge Steel: Choosing the Right Tip Geometry",
+    "date": "2026-08-15",
+    "author": "Engineering",
+    "cover": "/assets/blog-applications.jpg",
+    "excerpt": "Self-drilling vs. self-tapping, thread-forming vs. thread-cutting, and the tip-geometry trade-offs when fastening into 0.6–1.5 mm cold-formed steel.",
+    "tags": [
+      "engineering",
+      "self-tapping-screws"
+    ],
+    "content": "Choosing the right self-tapping screw for light-gauge steel (0.6 – 1.5 mm) comes down to **three questions**: are you fastening into a pre-punched or pre-drilled hole, or not? Is the substrate uniform or multi-layer? And what holding force do you actually need?\n\n## Quick reference\n\n| Substrate | Tip type | Typical thread | Drive |\n|---|---|---|---|\n| 0.6–0.9 mm steel | Thread-forming (Type A) | Fine, spaced | Phillips / Torx |\n| 1.0–1.5 mm steel | Thread-cutting (Type B/T) | Coarser | Torx preferred |\n| Steel-to-aluminium | Thread-cutting (Type B) | Coarse | Torx |\n| Multi-layer (steel+wood) | Self-drilling tip + thread-rolling | Coarse | Torx / hex |\n| Pre-drilled hole | Machine screw thread | Standard M-class | Phillips / hex |\n\n## Why the tip matters\n\n- **Thread-forming (Type A)** displaces material — good for thin, ductile substrates but can cause stress marks around the joint.\n- **Thread-cutting (Type B/T)** actually removes chips — cleaner in multi-layer joints, less driving torque.\n- **Self-drilling tips** add a drill point — saves a separate operation but requires close tolerance on perpendicularity.\n\n## Specifying correctly for an OEM\n\nIf you are designing a new assembly and want predictable torque-out performance:\n\n1. State the **substrate grade and thickness** (e.g. \"DC01, 1.0 mm\").\n2. State the **minimum pull-out and torque-out values** (typically ≥ 1.5 kN for thin steel).\n3. Ask for the **washer face diameter** if the joint is on a soft cladding.\n4. Specify the **coating** (zinc flake, zinc-electroplated, zinc-nickel, or stainless A2/A4).\n\nSend us your drawing or sample — we will suggest a stock-standard pattern and confirm torque-out data before sampling."
+  }
+]

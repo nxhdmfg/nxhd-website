@@ -1,0 +1,56 @@
+# ========================================================================
+# Decap CMS (formerly Netlify CMS) configuration for Ningxin Huida
+# ========================================================================
+# Backend:   GitHub OAuth via Cloudflare Pages Worker proxy (/api/auth, /api/callback)
+# Repository: <USER>/<REPO>  ← replace after creating the GitHub repo
+# Branch:    main
+# Workflow:  user logs in → Decap commits new .md → Cloudflare auto-rebuilds
+# ========================================================================
+
+# IMPORTANT: replace these two lines with your actual GitHub repo after creating it
+# e.g. repo: zhangningxin/nxhd-website
+repo: YOUR_GITHUB_USER/YOUR_REPO_NAME
+
+backend:
+  name: github
+  branch: main
+  base_url: https://www.nxhdmfg.com
+  auth_endpoint: api/auth      # Worker endpoint that initiates GitHub OAuth
+  open_authoring: false
+  squash_merges: true
+
+# Editorial workflow forces you to click "Publish" — never auto-commit
+publish_mode: editorial_workflow
+
+# Where uploaded images live in the repo (Decap will create the folder on first upload)
+media_folder: "assets/uploads"
+public_folder: "/assets/uploads"
+
+# Apply site brand
+site_url: https://www.nxhdmfg.com
+display_url: https://www.nxhdmfg.com
+logo_url: /assets/logo.webp
+
+collections:
+  - name: "posts"
+    label: "News & Insights"
+    label_singular: "Article"
+    folder: "content/posts"
+    create: true
+    delete: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    extension: "md"
+    format: "frontmatter"
+    summary: "{{title}} — {{date | date('YYYY-MM-DD')}} — {{author}}"
+    sortable_fields: ["date", "title"]
+    view_groups:
+      - { label: "Year", field: "date", pattern: "\\d{4}" }
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "URL Slug", name: "slug", widget: "string", hint: "Lowercase letters, numbers, hyphens (e.g. 'fastener-tips-q3')", pattern: ["^[a-z0-9-]+$", "Only lowercase a–z, 0–9 and hyphen"] }
+      - { label: "Publish Date", name: "date", widget: "datetime", picker_utc: false, format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false }
+      - { label: "Author", name: "author", widget: "string", default: "NXHD Team", required: false }
+      - { label: "Cover Image", name: "cover", widget: "image", allow_multiple: false, hint: "Recommended: 1200×675 px, JPG or PNG, ≤ 300 KB" }
+      - { label: "Excerpt", name: "excerpt", widget: "text", required: false, hint: "1–2 sentence summary shown on the listing page" }
+      - { label: "Tags", name: "tags", widget: "list", required: false, hint: "Used to filter related articles" }
+      - { label: "Body", name: "body", widget: "markdown", hint: "Full article body — supports Markdown (headings, bold, images, tables, code blocks)" }

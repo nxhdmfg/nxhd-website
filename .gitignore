@@ -1,0 +1,12 @@
+# Workspace / environment
+.workbuddy/
+*.log
+.DS_Store
+Thumbs.db
+
+# Build artifacts / deployment package (generated locally)
+nxhd-deploy.zip
+
+# IDE
+.vscode/
+.idea/

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NXHD Content Manager</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<style>
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:#F0F5FA}
+  .ncms-loading{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;color:#516280;font-size:14px}
+  .ncms-spinner{width:36px;height:36px;border:3px solid rgba(0,102,255,.2);border-top-color:#0066FF;border-radius:50%;animation:spin 1s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+<div class="ncms-loading">
+  <div class="ncms-spinner"></div>
+  <div>Loading content manager…</div>
+</div>
+<script src="https://unpkg.com/decap-cms@^3.6.2/dist/decap-cms.js"></script>
+</body>
+</html>

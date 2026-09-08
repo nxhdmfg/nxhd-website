@@ -9,7 +9,7 @@
 
 # IMPORTANT: replace these two lines with your actual GitHub repo after creating it
 # e.g. repo: zhangningxin/nxhd-website
-repo: YOUR_GITHUB_USER/YOUR_REPO_NAME
+repo: nxhdmfg/nxhd-website
 
 backend:
   name: github

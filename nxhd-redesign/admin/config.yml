@@ -20,7 +20,7 @@ backend:
 publish_mode: editorial_workflow
 
 # Where uploaded images live in the repo (Decap will create the folder on first upload)
-media_folder: "assets/uploads"
+media_folder: "nxhd-redesign/assets/uploads"
 public_folder: "/assets/uploads"
 
 # Apply site brand
@@ -32,7 +32,7 @@ collections:
   - name: "posts"
     label: "News & Insights"
     label_singular: "Article"
-    folder: "content/posts"
+    folder: "nxhd-redesign/content/posts"
     create: true
     delete: true
     slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
@@ -51,3 +51,4 @@ collections:
       - { label: "Excerpt", name: "excerpt", widget: "text", required: false, hint: "1–2 sentence summary shown on the listing page" }
       - { label: "Tags", name: "tags", widget: "list", required: false, hint: "Used to filter related articles" }
       - { label: "Body", name: "body", widget: "markdown", hint: "Full article body — supports Markdown (headings, bold, images, tables, code blocks)" }
+Commit message: Fix Decap content paths

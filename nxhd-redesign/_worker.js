@@ -220,8 +220,16 @@ function popupPostMessage(token, provider, error) {
     }
     if (window.opener && window.opener !== window) {
       window.opener.postMessage(msg, '*');
+      // Belt-and-suspenders: also persist the token in localStorage so the
+      // admin page can pick it up via a `storage` event and replay the same
+      // message Decap is waiting for. This handles cases where the browser
+      // strips window.opener references or Decap's listener isn't ready in time.
+      try {
+        localStorage.setItem('decap-cms-oauth-token', token);
+        localStorage.setItem('decap-cms-oauth-provider', provider);
+      } catch (e) {}
       document.getElementById('status').textContent = 'Authorized — closing window…';
-      setTimeout(function(){ window.close(); }, 400);
+      setTimeout(function(){ window.close(); }, 800);
     } else {
       // No opener: browser opened auth as a new tab. Use localStorage fallback.
       try {

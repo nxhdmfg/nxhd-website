@@ -87,6 +87,8 @@ header.scrolled{box-shadow:0 10px 36px -20px rgba(0,22,58,.4)}
 .btn.primary:hover{transform:translateY(-2px);box-shadow:0 18px 42px -10px rgba(0,194,255,.7)}
 .btn.ghost{border:1px solid rgba(255,255,255,.4);color:#fff;background:rgba(255,255,255,.06)}
 .btn.ghost:hover{border-color:var(--cyan);color:var(--cyan);background:rgba(0,194,255,.1)}
+.btn.trade{border:1px solid var(--cyan);color:var(--cyan);background:rgba(0,194,255,.12)}
+.btn.trade:hover{border-color:#fff;color:var(--navy);background:var(--cyan)}
 .btn svg{width:18px;height:18px;fill:currentColor}
 .hero .pros{display:flex;gap:28px;margin-top:44px;flex-wrap:wrap}
 .hero .pros div{font-size:14px;color:#9FB9D6;display:flex;align-items:center;gap:9px}
@@ -385,6 +387,17 @@ footer{background:var(--navy);color:#8FAFD4;padding:66px 0 0}
 .cinfo .card p{font-size:14.5px;color:var(--slate)}
 .cinfo .card a{color:var(--blue);font-weight:600}
 .cinfo .card a:hover{text-decoration:underline}
+.trade-banner{margin-top:32px;display:flex;align-items:center;gap:18px;padding:22px 26px;border-radius:var(--radius);background:linear-gradient(135deg,var(--blue),var(--cyan));color:#fff;text-decoration:none;box-shadow:var(--shadow);transition:.25s}
+.trade-banner:hover{transform:translateY(-2px);box-shadow:0 18px 42px -10px rgba(0,194,255,.7)}
+.trade-banner .ic{width:48px;height:48px;flex:0 0 auto;border-radius:12px;background:rgba(255,255,255,.18);display:grid;place-items:center}
+.trade-banner .ic svg{width:24px;height:24px;fill:#fff}
+.trade-banner .txt{flex:1;display:flex;flex-direction:column;gap:4px}
+.trade-banner .txt b{font-size:16px;color:#fff;font-weight:700}
+.trade-banner .txt span{font-size:14px;color:rgba(255,255,255,.85);line-height:1.45}
+.trade-banner .arrow{width:36px;height:36px;flex:0 0 auto;display:grid;place-items:center;border-radius:50%;background:rgba(255,255,255,.18);transition:.25s}
+.trade-banner .arrow svg{width:18px;height:18px;fill:#fff}
+.trade-banner:hover .arrow{background:#fff}
+.trade-banner:hover .arrow svg{fill:var(--navy);stroke:var(--navy)}
 .map{background:#fff;border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-sm);min-height:340px;position:relative}
 .map .map-meta{display:flex;align-items:center;gap:14px;padding:18px 22px;border-top:1px solid var(--line)}
 .map .map-meta svg{width:26px;height:26px;fill:var(--blue);flex:0 0 auto}

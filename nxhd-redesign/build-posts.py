@@ -1,12 +1,15 @@
 #!/usr/bin/env python3
 """
-build-posts.py — Regenerate /posts.json from /content/posts/*.md
+build-posts.py — Regenerate /posts.v2.json from /content/posts/*.md
 
 Reads each Markdown file, parses the front-matter (YAML-ish, simple key:value),
 extracts the body, and aggregates everything into a single sorted-by-date-desc
-JSON array at /posts.json. Run this:
+JSON array at /posts.v2.json. Run this:
   - manually before zipping for Direct Upload
   - automatically by Cloudflare Pages build step on every git push
+
+Note: filename is posts.v2.json (not posts.json) to bypass a stuck build cache
+on Cloudflare Pages where the legacy posts.json file was never refreshed.
 """
 from __future__ import annotations
 
@@ -19,7 +22,7 @@ from typing import Any, Dict, List
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 POSTS_DIR = os.path.join(HERE, "content", "posts")
-OUTPUT = os.path.join(HERE, "posts.json")
+OUTPUT = os.path.join(HERE, "posts.v2.json")
 
 
 def parse_simple_frontmatter(text: str) -> tuple[Dict[str, Any], str]:

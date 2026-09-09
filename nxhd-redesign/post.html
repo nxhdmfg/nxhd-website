@@ -175,7 +175,7 @@
       return;
     }
     try {
-      const r = await fetch('posts.json?v=' + Date.now(), { cache: 'no-cache' });
+      const r = await fetch('posts.v2.json?v=' + Date.now(), { cache: 'no-cache' });
       const posts = await r.json();
       const post = posts.find(p => p.slug === slug);
       if (!post) {

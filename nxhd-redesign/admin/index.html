@@ -53,6 +53,30 @@
   }
 })();
 </script>
+<script>
+// Hide the custom loading spinner once Decap CMS has rendered its UI.
+// Decap sometimes leaves the original body content in place and only overlays
+// its own interface, so we poll for the Decap root and then fade out/remove
+// our loader. Fallback timeout prevents the spinner from staying forever.
+(function () {
+  var loader = document.querySelector('.ncms-loading');
+  if (!loader) return;
+  var attempts = 0;
+  var maxAttempts = 30;
+  var interval = setInterval(function () {
+    var decapRoot = document.getElementById('nc-root') || document.querySelector('.nc-app') || document.querySelector('[class*="nc-"]');
+    attempts++;
+    if (decapRoot || attempts >= maxAttempts) {
+      clearInterval(interval);
+      loader.style.transition = 'opacity 300ms ease';
+      loader.style.opacity = '0';
+      setTimeout(function () {
+        loader.style.display = 'none';
+      }, 350);
+    }
+  }, 200);
+})();
+</script>
 <script src="https://unpkg.com/decap-cms@^3.6.2/dist/decap-cms.js"></script>
 </body>
 </html>
